@@ -2,11 +2,10 @@ import React,{useState,useEffect} from "react";
 import {Layout, message} from "antd";
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
-import defaultAvatar from '../assets/defaultAvatar.jpg'
 import {Link,useNavigate} from "react-router-dom";
 
 export default function Header() {
-    const [avatar,setAvatar]=useState(defaultAvatar)
+    const [avatar,setAvatar]=useState('')
     const [userName,setUserName]=useState("")
     const navigate = useNavigate();
 
