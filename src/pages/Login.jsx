@@ -1,29 +1,29 @@
-import {  LockOutlined, UserOutlined, } from '@ant-design/icons';
-import { LoginForm, ProFormCheckbox, ProFormText, ProConfigProvider, } from '@ant-design/pro-components';
-import { message } from 'antd';
-import {Link, useNavigate} from "react-router-dom";
+import React from 'react';
+import { Button, message, Form, Input } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {Link,useNavigate} from 'react-router-dom'
 import "./less/Login.less"
 import {LoginApi} from "../request/api";
 
-function Login() {
-    const navigate = useNavigate();
+export default function Login() {
+    const navigate = useNavigate()
 
     const onFinish = (values) => {
-        console.log('Success:', values);
         LoginApi({
             user_name: values.username,
-            password: values.password,
-        }).then(res=>{
+            password: values.password
+        }).then(res => {
             console.log(res)
-            if (res.status === 200){
+            if(res.status===200){
                 localStorage.setItem("token",res.data.token);
                 localStorage.setItem("user_name",res.data.user.user_name);
-                // 跳转
+                message.success("登陆成功").then();
+                // 跳到登录页
                 setTimeout(()=>{
-                    navigate('/')
-                },750)
+                    navigate('/list')
+                } ,800)
             }else{
-                message.error(res.msg).then(r => "")
+                message.error(res.msg).then();
             }
         })
     };
@@ -31,49 +31,55 @@ function Login() {
     return (
         <div className="login">
             <div className="login_box">
-                <ProConfigProvider hashed={false}>
-                <div style={{ backgroundColor: 'white' }}>
-                <LoginForm
-                    name="basic"
-                    initialValues={{
-                        remember: true,
-                    }}
-                    onFinish={onFinish}
-                    autoComplete="off"
-                >
-                <h1>登陆</h1>
-                <ProFormText
-                    name="username"
-                    fieldProps={{
-                        size: 'large',
-                        prefix: <UserOutlined className={'prefixIcon'}/>}}
-                    placeholder={'请输入用户名'}
-                    rules={[{
-                        required: true,
-                        message: '请输入用户名!'},
-                ]}/>
-                <ProFormText.Password
-                    name="password"
-                    fieldProps={{
-                        size: 'large',
-                        prefix: <LockOutlined className={'prefixIcon'}/>}}
-                    placeholder={'请输入密码'}
-                    rules={[{
-                        required: true,
-                        message: '请输入密码！'}]}/>
-                <div style={{marginBlockEnd: 24}}>
-                    <ProFormCheckbox noStyle name="autoLogin">
-                        记住密码
-                    </ProFormCheckbox>
-                    <Link style={{
-                        float: 'right',
-                    }} to="/register">还没账号?立即注册</Link>
-                </div>
-            </LoginForm>
-                    </div>
-        </ProConfigProvider>
-            </div>
-        </div>);
-}
+                <div className='register_form'>
+                    <h1>登陆</h1>
+                    <Form
+                        name="basic"
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={onFinish}
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            name="username"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '请输入用户名!',
+                                },
+                            ]}
+                        >
+                            <Input size='large' prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入用户名"/>
+                        </Form.Item>
 
-export default Login;
+                        <Form.Item
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '请输入密码!',
+                                },
+                            ]}
+                        >
+                            <Input.Password size='large' prefix={<LockOutlined className="site-form-item-icon" />} placeholder="请输入密码"/>
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Link style={{
+                                float: 'right',
+                            }} to="/register">还没账号?立即注册</Link>
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Button size='large' type="primary" htmlType="submit" block>
+                                登陆
+                            </Button>
+                        </Form.Item>
+
+                    </Form>
+                </div>
+            </div>
+        </div>
+    )
+};
