@@ -17,6 +17,7 @@ export default function Login() {
             if(res.status===200){
                 localStorage.setItem("token",res.data.token);
                 localStorage.setItem("user_name",res.data.user.user_name);
+                localStorage.setItem("avatar","https://q1.qlogo.cn/g?b=qq&nk=3274661196&s=640")
                 message.success("登陆成功").then();
                 // 跳到登录页
                 setTimeout(()=>{
