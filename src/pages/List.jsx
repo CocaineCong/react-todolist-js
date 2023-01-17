@@ -10,12 +10,13 @@ const defaultData = [
         id: '1',
         title: '一键三连',
         content: '给小生凡一的视频一键三连',
+        start_time: '2023年01月01日'
     }
 ];
 
 export default () => {
     const [dataSource, setDataSource] = useState(defaultData);
-    const [total,setTotal]=useState(0)
+    const [total,setTotal]=useState(1)
     const [current,setCurrent]=useState(1)
     const [pageSize,setPageSize]=useState(10)
 
@@ -24,14 +25,12 @@ export default () => {
             start:num,
             limit:pageSize,
         }).then(res=>{
-            if (res.status === 200){
-                res.data.item.map(item=>{
-                    item.start_time = moment(parseInt(item.start_time)*1000).format("YYYY-MM-DD HH:mm:ss");
-                })
+            if (res.status === 200 && res.data.item !== null ){
+                res.data.item.map(item=>{item.start_time = moment(parseInt(item.start_time)*1000).format("YYYY-MM-DD HH:mm:ss");})
                 setDataSource(res.data.item)
                 setTotal(res.data.total)
                 setCurrent(num)
-            }else{
+            }else if (res.status!==200){
                 message.error(res.msg).then()
             }
         })
