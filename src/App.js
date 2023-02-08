@@ -8,9 +8,7 @@ import {Footer} from "antd/es/layout/layout";
 function App() {
   return (
       <Layout id='app'>
-          <div>
-              <Header />
-          </div>
+          <Header />
           <div className='container'>
             <div className='container_box'>
             <div className="container_content">
